@@ -23,3 +23,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#avos·â×°¿â²»»ìÏý
+-keep class com.lakala.cloudpos.okhttputil.**{*;}
+-dontwarn com.lakala.cloudpos.okhttputil.**
+
+# OkHttp3
+-dontwarn okhttp3.logging.**
+-keep class okhttp3.internal.**{*;}
+-keep class okhttp3.Cache.**{*;}
+-dontwarn okio.**

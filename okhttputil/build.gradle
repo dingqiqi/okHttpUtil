@@ -12,9 +12,46 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            //签名
+            signingConfig signingConfigs.r
+            //混淆
+            minifyEnabled true
+            //对齐
+            zipAlignEnabled true
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            //签名
+            signingConfig signingConfigs.d
+            //混淆
+            minifyEnabled false
+            //对齐
+            zipAlignEnabled false
+        }
+
+        //修改生成的文件名
+        libraryVariants.all { variant ->
+            def time = new java.text.SimpleDateFormat("yyyyMMdd").format(new Date())
+            variant.outputs.each { output ->
+                def file = output.outputFile
+                if (file != null && file.name.endsWith('.aar')) {
+                    def fileName = PROJECT_NAME + "_V" + defaultConfig.versionName + "_" + time + ".aar"
+                    output.outputFile = new File(file.parent, fileName)
+                }
+            }
+        }
+    }
+
+    //为了解决部分第三方库重复打包了META-INF的问题
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
